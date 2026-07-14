@@ -1,0 +1,91 @@
+<div class="container mt-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Product List</h2>
+
+    <div style="width: 300px">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search Product..."
+        [(ngModel)]="searchText"
+        (input)="onSearch()"
+      />
+    </div>
+  </div>
+
+  <!-- Loader Condition -->
+  @if (isLoading) {
+    <div class="text-center my-5 py-5">
+      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
+      <h5 class="mt-3 text-secondary">Loading Products...</h5>
+    </div>
+  } @else {
+    <!-- Table -->
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th class="text-center" width="5%">ID</th>
+          <th class="text-center" width="30%">Name</th>
+          <th class="text-center" width="15%">Price</th>
+          <th class="text-center" width="15%">Quantity</th>
+          <th class="text-center" width="35%">Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (product of products; track product.id) {
+          <tr>
+            <td class="text-center">{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td class="text-center">৳ {{ product.price }}</td>
+            <td class="text-center">{{ product.quantity }}</td>
+
+            <td>
+              <div class="d-flex justify-content-center gap-2">
+                <a
+                  [routerLink]="['/user/products', product.id]"
+                  class="btn btn-outline-primary rounded-pill px-4"
+                >
+                  View
+                </a>
+               
+                <a 
+                [routerLink]="['/user/products/edit', product.id]" 
+                class="btn btn-outline-secondary rounded-pill px-4"> Edit </a>
+                
+                <a 
+                [routerLink]="['/user/products/edit', product.id]" 
+                class="btn btn-outline-danger rounded-pill px-4"> Delete </a>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="text-center text-muted py-4">No products found.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-between align-items-center mt-4">
+      <button class="btn btn-primary rounded-pill px-4" (click)="previousPage()" [disabled]="pageNumber === 1">
+        ← Previous
+      </button>
+
+      <div>
+        Page <strong>{{ pageNumber }}</strong> of
+        <strong>{{ totalPages || 1 }}</strong>
+      </div>
+
+      <button class="btn btn-primary rounded-pill px-4" (click)="nextPage()" [disabled]="pageNumber === totalPages || totalPages === 0">
+        Next →
+      </button>
+    </div>
+
+    <div class="mt-3 text-muted">
+      <strong>Total Records: {{ totalRecords }}</strong>
+    </div>
+  }
+</div>

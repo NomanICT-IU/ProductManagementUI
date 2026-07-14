@@ -1,0 +1,53 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm border-bottom">
+    <div class="container">
+      <!-- Logo -->
+      <a class="navbar-brand fw-bold" routerLink="/user/products"> Datavanced </a>
+
+      <!-- Mobile Toggle -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Menu -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <!-- Left Menu -->
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              [routerLink]="['/user/products']"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              Product List
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/user/products/add']" routerLinkActive="active"> Add Product </a>
+          </li>
+        </ul>
+
+        <!-- Right Menu -->
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/auth/login" routerLinkActive="active"> Register </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/auth/login" routerLinkActive="active"> Logout </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

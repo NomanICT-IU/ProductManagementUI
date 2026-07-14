@@ -1,0 +1,167 @@
+<div class="container py-5 position-relative">
+  
+  <!-- Native Floating Alert -->
+  @if (alertMessage) {
+    <div 
+      class="alert position-fixed top-0 end-0 m-4 shadow-lg border-0 rounded-3 alert-dismissible fade show" 
+      [ngClass]="'alert-' + alertType"
+      style="z-index: 1060; min-width: 300px; max-width: 450px;"
+      role="alert"
+    >
+      <div class="d-flex align-items-center gap-2 fw-semibold">
+        @if (alertType === 'success') { <span>✓</span> }
+        @if (alertType === 'danger') { <span>⚠</span> }
+        @if (alertType === 'warning') { <span>ℹ</span> }
+        <div>{{ alertMessage }}</div>
+      </div>
+      <button type="button" class="btn-close" (click)="alertMessage = null" aria-label="Close"></button>
+    </div>
+  }
+
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      
+      <!-- Back Link -->
+      <div class="mb-3">
+        <a routerLink="/user/products" class="text-decoration-none text-muted d-inline-flex align-items-center gap-1">
+          <span class="fs-5">&larr;</span> Back to Product List
+        </a>
+      </div>
+
+      <!-- Main Card -->
+      <div class="card shadow border-0 rounded-4 overflow-hidden">
+        
+        <!-- Header -->
+        <div class="card-header bg-dark text-white p-4">
+          <h4 class="mb-1 fw-bold">Update Product</h4>
+          <p class="text-white-50 mb-0 small">Modify the fields below to update the product specifications.</p>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body p-4">
+          
+          <!-- Loading State Spinner -->
+          @if (isLoading) {
+            <div class="d-flex flex-column align-items-center justify-content-center py-5">
+              <div class="spinner-border text-dark mb-2" role="status"></div>
+              <span class="text-muted small fw-semibold">Loading product details...</span>
+            </div>
+          } @else {
+            
+            <!-- Main Form -->
+            <form [formGroup]="productForm" (ngSubmit picture)="onSubmit()" novalidate>
+              
+              <!-- Product Name -->
+              <div class="mb-4">
+                <label for="name" class="form-label fw-semibold text-secondary">Product Name <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  id="name"
+                  class="form-control py-2"
+                  placeholder="e.g. Wireless Mouse"
+                  formControlName="name"
+                  [ngClass]="{ 'is-invalid': f['name'].touched && f['name'].errors }"
+                />
+                @if (f['name'].touched && f['name'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['name'].errors['required']) { Product name is required. }
+                    @if (f['name'].errors['minlength']) { Name must be at least 3 characters. }
+                    @if (f['name'].errors['maxlength']) { Name cannot exceed 100 characters. }
+                  </div>
+                }
+              </div>
+
+              <!-- Description -->
+              <div class="mb-4">
+                <label for="description" class="form-label fw-semibold text-secondary">Description <span class="text-danger">*</span></label>
+                <textarea
+                  id="description"
+                  rows="4"
+                  class="form-control"
+                  placeholder="Write a brief overview of the product..."
+                  formControlName="description"
+                  [ngClass]="{ 'is-invalid': f['description'].touched && f['description'].errors }"
+                ></textarea>
+                @if (f['description'].touched && f['description'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['description'].errors['required']) { Description is required. }
+                    @if (f['description'].errors['maxlength']) { Description cannot exceed 500 characters. }
+                  </div>
+                }
+              </div>
+
+              <!-- Price and Quantity -->
+              <div class="row">
+                <!-- Price -->
+                <div class="col-md-6 mb-4">
+                  <label for="price" class="form-label fw-semibold text-secondary">Price (BDT) <span class="text-danger">*</span></label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light">৳</span>
+                    <input
+                      type="number"
+                      id="price"
+                      class="form-control py-2"
+                      placeholder="0.00"
+                      formControlName="price"
+                      [ngClass]="{ 'is-invalid': f['price'].touched && f['price'].errors }"
+                    />
+                    @if (f['price'].touched && f['price'].errors) {
+                      <div class="invalid-feedback d-block">
+                        @if (f['price'].errors['required']) { Price is required. }
+                        @if (f['price'].errors['min']) { Price must be greater than 0. }
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <!-- Quantity -->
+                <div class="col-md-6 mb-4">
+                  <label for="quantity" class="form-label fw-semibold text-secondary">Available Stock <span class="text-danger">*</span></label>
+                  <input
+                    type="number"
+                    id="quantity"
+                    class="form-control py-2"
+                    placeholder="e.g. 50"
+                    formControlName="quantity"
+                    [ngClass]="{ 'is-invalid': f['quantity'].touched && f['quantity'].errors }"
+                  />
+                  @if (f['quantity'].touched && f['quantity'].errors) {
+                    <div class="invalid-feedback">
+                      @if (f['quantity'].errors['required']) { Stock quantity is required. }
+                      @if (f['quantity'].errors['min']) { Stock quantity must be at least 1. }
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <hr class="text-muted my-4" />
+
+              <!-- Action Buttons -->
+              <div class="d-flex justify-content-end align-items-center gap-3">
+                <a routerLink="/user/products" class="btn btn-light border rounded-pill px-4 py-2 text-secondary fw-semibold">
+                  Cancel
+                </a>
+
+                <button
+                  type="submit"
+                  class="btn btn-dark rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2"
+                  [disabled]="isSubmitting"
+                >
+                  @if (isSubmitting) {
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Updating...
+                  } @else {
+                    Update Product
+                  }
+                </button>
+              </div>
+
+            </form>
+          }
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
