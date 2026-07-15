@@ -1,3 +1,32 @@
+<!-- Floating Top Center Alert (বুটস্ট্র্যাপ অ্যালার্ট বক্স) -->
+@if (alertMessage) {
+  <div 
+    class="alert position-fixed start-50 translate-middle-x m-3 shadow-lg border-0 rounded-3 alert-dismissible fade show slide-down-alert" 
+    [ngClass]="'alert-' + alertType"
+    style="z-index: 1060; min-width: 320px; max-width: 450px;"
+    role="alert"
+  >
+    <div class="d-flex align-items-center gap-2 fw-semibold">
+      @if (alertType === 'success') {
+        <span class="fs-5">✓</span>
+      }
+      @if (alertType === 'danger') {
+        <span class="fs-5">⚠</span>
+      }
+      @if (alertType === 'warning') {
+        <span class="fs-5">ℹ</span>
+      }
+      <div>{{ alertMessage }}</div>
+    </div>
+    <button 
+      type="button" 
+      class="btn-close" 
+      (click)="alertMessage = null" 
+      aria-label="Close"
+    ></button>
+  </div>
+}
+
 <div class="container py-4">
   <div class="row justify-content-center">
     <div class="col-md-8 col-lg-6">

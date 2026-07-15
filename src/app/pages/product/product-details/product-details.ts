@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; // ChangeDetectorRef ইম্পোর্ট করুন
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; // ChangeDetectorRef 
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
@@ -19,7 +19,7 @@ export class ProductDetails implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private cdr: ChangeDetectorRef // এখানে ইনজেক্ট করুন
+    private cdr: ChangeDetectorRef 
   ) {}
 
   ngOnInit(): void {

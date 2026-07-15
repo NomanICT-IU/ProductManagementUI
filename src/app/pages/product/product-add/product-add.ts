@@ -69,7 +69,7 @@ export class ProductAdd {
 
         setTimeout(() => {
           this.router.navigate(['/user/products']);
-        }, 1000);
+        }, 3000);
       },
       error: (err) => {
         console.error('Error adding product:', err);

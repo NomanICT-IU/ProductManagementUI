@@ -5,7 +5,6 @@
 
       <h5 class="mt-3">Loading Product...</h5>
     </div>
-
   } @else if (product) {
     <div class="card shadow-lg border-0 rounded-4">
       <div class="card-header bg-primary text-white py-3">
@@ -69,7 +68,6 @@
           <div class="col-md-8">
             @if (product.updatedDate) {
               {{ product.updatedDate | date: 'dd MMM yyyy' }}
-
             } @else {
               <span class="text-muted"> Not Updated </span>
             }
@@ -83,13 +81,23 @@
             ← Back
           </a>
 
-          <a class="btn btn-outline-secondary rounded-pill px-4"> Edit </a>
+          <a
+            [routerLink]="['/user/products/edit', product.id]"
+            class="btn btn-outline-secondary rounded-pill px-4"
+          >
+            Edit
+          </a>
 
-          <a class="btn btn-outline-danger rounded-pill px-4"> Delete </a>
+          <a
+            [routerLink]="['/user/products']"
+            [queryParams]="{ openDelete: product.id }"
+            class="btn btn-outline-danger rounded-pill px-4"
+          >
+            Delete
+          </a>
         </div>
       </div>
     </div>
-
   } @else {
     <div class="alert alert-danger text-center">Product Not Found.</div>
   }

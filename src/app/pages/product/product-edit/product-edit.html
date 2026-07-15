@@ -1,45 +1,57 @@
 <div class="container py-5 position-relative">
-  
   <!-- Native Floating Alert -->
   @if (alertMessage) {
-    <div 
-      class="alert position-fixed top-0 end-0 m-4 shadow-lg border-0 rounded-3 alert-dismissible fade show" 
+    <div
+      class="alert position-fixed start-50 translate-middle-x m-3 shadow-lg border-0 rounded-3 alert-dismissible fade show slide-down-alert"
       [ngClass]="'alert-' + alertType"
-      style="z-index: 1060; min-width: 300px; max-width: 450px;"
+      style="z-index: 1060; min-width: 320px; max-width: 450px"
       role="alert"
     >
       <div class="d-flex align-items-center gap-2 fw-semibold">
-        @if (alertType === 'success') { <span>✓</span> }
-        @if (alertType === 'danger') { <span>⚠</span> }
-        @if (alertType === 'warning') { <span>ℹ</span> }
+        @if (alertType === 'success') {
+          <span>✓</span>
+        }
+        @if (alertType === 'danger') {
+          <span>⚠</span>
+        }
+        @if (alertType === 'warning') {
+          <span>ℹ</span>
+        }
         <div>{{ alertMessage }}</div>
       </div>
-      <button type="button" class="btn-close" (click)="alertMessage = null" aria-label="Close"></button>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="alertMessage = null"
+        aria-label="Close"
+      ></button>
     </div>
   }
 
   <div class="row justify-content-center">
     <div class="col-md-8 col-lg-6">
-      
       <!-- Back Link -->
       <div class="mb-3">
-        <a routerLink="/user/products" class="text-decoration-none text-muted d-inline-flex align-items-center gap-1">
+        <a
+          routerLink="/user/products"
+          class="text-decoration-none text-muted d-inline-flex align-items-center gap-1"
+        >
           <span class="fs-5">&larr;</span> Back to Product List
         </a>
       </div>
 
       <!-- Main Card -->
       <div class="card shadow border-0 rounded-4 overflow-hidden">
-        
         <!-- Header -->
         <div class="card-header bg-dark text-white p-4">
           <h4 class="mb-1 fw-bold">Update Product</h4>
-          <p class="text-white-50 mb-0 small">Modify the fields below to update the product specifications.</p>
+          <p class="text-white-50 mb-0 small">
+            Modify the fields below to update the product specifications.
+          </p>
         </div>
 
         <!-- Body -->
         <div class="card-body p-4">
-          
           <!-- Loading State Spinner -->
           @if (isLoading) {
             <div class="d-flex flex-column align-items-center justify-content-center py-5">
@@ -47,13 +59,13 @@
               <span class="text-muted small fw-semibold">Loading product details...</span>
             </div>
           } @else {
-            
             <!-- Main Form -->
-            <form [formGroup]="productForm" (ngSubmit picture)="onSubmit()" novalidate>
-              
+            <form [formGroup]="productForm" (ngSubmit)="onSubmit()" novalidate>
               <!-- Product Name -->
               <div class="mb-4">
-                <label for="name" class="form-label fw-semibold text-secondary">Product Name <span class="text-danger">*</span></label>
+                <label for="name" class="form-label fw-semibold text-secondary"
+                  >Product Name <span class="text-danger">*</span></label
+                >
                 <input
                   type="text"
                   id="name"
@@ -64,16 +76,24 @@
                 />
                 @if (f['name'].touched && f['name'].errors) {
                   <div class="invalid-feedback">
-                    @if (f['name'].errors['required']) { Product name is required. }
-                    @if (f['name'].errors['minlength']) { Name must be at least 3 characters. }
-                    @if (f['name'].errors['maxlength']) { Name cannot exceed 100 characters. }
+                    @if (f['name'].errors['required']) {
+                      Product name is required.
+                    }
+                    @if (f['name'].errors['minlength']) {
+                      Name must be at least 3 characters.
+                    }
+                    @if (f['name'].errors['maxlength']) {
+                      Name cannot exceed 100 characters.
+                    }
                   </div>
                 }
               </div>
 
               <!-- Description -->
               <div class="mb-4">
-                <label for="description" class="form-label fw-semibold text-secondary">Description <span class="text-danger">*</span></label>
+                <label for="description" class="form-label fw-semibold text-secondary"
+                  >Description <span class="text-danger">*</span></label
+                >
                 <textarea
                   id="description"
                   rows="4"
@@ -84,8 +104,12 @@
                 ></textarea>
                 @if (f['description'].touched && f['description'].errors) {
                   <div class="invalid-feedback">
-                    @if (f['description'].errors['required']) { Description is required. }
-                    @if (f['description'].errors['maxlength']) { Description cannot exceed 500 characters. }
+                    @if (f['description'].errors['required']) {
+                      Description is required.
+                    }
+                    @if (f['description'].errors['maxlength']) {
+                      Description cannot exceed 500 characters.
+                    }
                   </div>
                 }
               </div>
@@ -94,7 +118,9 @@
               <div class="row">
                 <!-- Price -->
                 <div class="col-md-6 mb-4">
-                  <label for="price" class="form-label fw-semibold text-secondary">Price (BDT) <span class="text-danger">*</span></label>
+                  <label for="price" class="form-label fw-semibold text-secondary"
+                    >Price (BDT) <span class="text-danger">*</span></label
+                  >
                   <div class="input-group">
                     <span class="input-group-text bg-light">৳</span>
                     <input
@@ -107,8 +133,12 @@
                     />
                     @if (f['price'].touched && f['price'].errors) {
                       <div class="invalid-feedback d-block">
-                        @if (f['price'].errors['required']) { Price is required. }
-                        @if (f['price'].errors['min']) { Price must be greater than 0. }
+                        @if (f['price'].errors['required']) {
+                          Price is required.
+                        }
+                        @if (f['price'].errors['min']) {
+                          Price must be greater than 0.
+                        }
                       </div>
                     }
                   </div>
@@ -116,7 +146,9 @@
 
                 <!-- Quantity -->
                 <div class="col-md-6 mb-4">
-                  <label for="quantity" class="form-label fw-semibold text-secondary">Available Stock <span class="text-danger">*</span></label>
+                  <label for="quantity" class="form-label fw-semibold text-secondary"
+                    >Available Stock <span class="text-danger">*</span></label
+                  >
                   <input
                     type="number"
                     id="quantity"
@@ -127,8 +159,12 @@
                   />
                   @if (f['quantity'].touched && f['quantity'].errors) {
                     <div class="invalid-feedback">
-                      @if (f['quantity'].errors['required']) { Stock quantity is required. }
-                      @if (f['quantity'].errors['min']) { Stock quantity must be at least 1. }
+                      @if (f['quantity'].errors['required']) {
+                        Stock quantity is required.
+                      }
+                      @if (f['quantity'].errors['min']) {
+                        Stock quantity must be at least 1.
+                      }
                     </div>
                   }
                 </div>
@@ -138,7 +174,10 @@
 
               <!-- Action Buttons -->
               <div class="d-flex justify-content-end align-items-center gap-3">
-                <a routerLink="/user/products" class="btn btn-light border rounded-pill px-4 py-2 text-secondary fw-semibold">
+                <a
+                  routerLink="/user/products"
+                  class="btn btn-light border rounded-pill px-4 py-2 text-secondary fw-semibold"
+                >
                   Cancel
                 </a>
 
@@ -148,20 +187,21 @@
                   [disabled]="isSubmitting"
                 >
                   @if (isSubmitting) {
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span
+                      class="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
                     Updating...
                   } @else {
                     Update Product
                   }
                 </button>
               </div>
-
             </form>
           }
-
         </div>
       </div>
-
     </div>
   </div>
 </div>
