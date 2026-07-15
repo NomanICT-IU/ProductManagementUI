@@ -1,83 +1,77 @@
-<div class="container mt-5">
+<div class="container mt-5 px-3 px-sm-4">
+  
   @if (isLoading) {
-    <div class="text-center mt-5">
-      <div class="spinner-border text-primary"></div>
-
-      <h5 class="mt-3">Loading Product...</h5>
+    <div class="text-center my-5 py-5">
+      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem" role="status"></div>
+      <h5 class="mt-3 text-secondary">Loading Product...</h5>
     </div>
-  } @else if (product) {
-    <div class="card shadow-lg border-0 rounded-4">
-      <div class="card-header bg-primary text-white py-3">
-        <h3 class="mb-0">Product Details</h3>
+  } 
+  
+  @else if (product) {
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+      
+      <div class="card-header bg-secondary text-white py-3 px-4">
+        <h3 class="mb-0 fw-bold fs-4">Product Details</h3>
       </div>
 
       <div class="card-body p-4">
-        <div class="row mb-3">
-          <div class="col-md-4 fw-bold">ID</div>
-          <div class="col-md-8">{{ product.id }}</div>
+        
+        <div class="row align-items-center py-2">
+          <div class="col-md-4 fw-bold text-secondary">ID</div>
+          <div class="col-md-8 text-muted fw-semibold">{{ product.id }}</div>
         </div>
+        <hr class="my-2 opacity-25" />
 
-        <hr />
-
-        <div class="row mb-3">
-          <div class="col-md-4 fw-bold">Name</div>
-          <div class="col-md-8">{{ product.name }}</div>
+        <div class="row align-items-center py-2">
+          <div class="col-md-4 fw-bold text-secondary">Name</div>
+          <div class="col-md-8 text-wrap text-break fw-medium fs-5">{{ product.name }}</div>
         </div>
+        <hr class="my-2 opacity-25" />
 
-        <hr />
-
-        <div class="row mb-3">
-          <div class="col-md-4 fw-bold">Description</div>
-          <div class="col-md-8">{{ product.description }}</div>
+        <div class="row align-items-center py-2">
+          <div class="col-md-4 fw-bold text-secondary">Description</div>
+          <div class="col-md-8 text-wrap text-break text-muted">{{ product.description || 'No description available.' }}</div>
         </div>
+        <hr class="my-2 opacity-25" />
 
-        <hr />
+        <div class="row align-items-center py-2">
+          <div class="col-md-4 fw-bold text-secondary">Price</div>
+          <div class="col-md-8 fw-bold text-dark fs-5">৳ {{ product.price | number }}</div>
+        </div>
+        <hr class="my-2 opacity-25" />
 
-        <div class="row mb-3">
-          <div class="col-md-4 fw-bold">Price</div>
+        <div class="row align-items-center py-2">
+          <div class="col-md-4 fw-bold text-secondary">Quantity</div>
           <div class="col-md-8">
-            {{ product.price | number }}
-
-            ৳
+            <span class="badge rounded-pill bg-light text-dark border px-3 py-2 fw-semibold">
+              {{ product.quantity }} Available
+            </span>
           </div>
         </div>
+        <hr class="my-2 opacity-25" />
 
-        <hr />
-
-        <div class="row mb-3">
-          <div class="col-md-4 fw-bold">Quantity</div>
-          <div class="col-md-8">
-            {{ product.quantity }}
-          </div>
+        <div class="row align-items-center py-2">
+          <div class="col-md-4 fw-bold text-secondary">Created Date</div>
+          <div class="col-md-8 text-muted">{{ product.createdDate | date: 'dd MMM yyyy' }}</div>
         </div>
+        <hr class="my-2 opacity-25" />
 
-        <hr />
-
-        <div class="row mb-3">
-          <div class="col-md-4 fw-bold">Created Date</div>
-          <div class="col-md-8">
-            {{ product.createdDate | date: 'dd MMM yyyy' }}
-          </div>
-        </div>
-
-        <hr />
-
-        <div class="row">
-          <div class="col-md-4 fw-bold">Updated Date</div>
-
+        <div class="row align-items-center py-2">
+          <div class="col-md-4 fw-bold text-secondary">Updated Date</div>
           <div class="col-md-8">
             @if (product.updatedDate) {
-              {{ product.updatedDate | date: 'dd MMM yyyy' }}
+              <span class="text-muted">{{ product.updatedDate | date: 'dd MMM yyyy' }}</span>
             } @else {
-              <span class="text-muted"> Not Updated </span>
+              <span class="text-muted fst-italic small">Not Updated Yet</span>
             }
           </div>
         </div>
+        
       </div>
 
-      <div class="card-footer bg-white">
-        <div class="d-flex justify-content-end gap-2">
-          <a routerLink="/user/products" class="btn btn-outline-primary rounded-pill px-4">
+      <div class="card-footer bg-light border-top-0 p-4">
+        <div class="d-flex flex-wrap justify-content-end gap-2">
+          <a routerLink="/user/products" class="btn btn-outline-secondary rounded-pill px-4">
             ← Back
           </a>
 
@@ -88,17 +82,77 @@
             Edit
           </a>
 
-          <a
-            [routerLink]="['/user/products']"
-            [queryParams]="{ openDelete: product.id }"
+          <button
+            type="button"
             class="btn btn-outline-danger rounded-pill px-4"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteConfirmModal"
+            (click)="openDeleteModal(product.id)"
           >
             Delete
-          </a>
+          </button>
         </div>
       </div>
+      
     </div>
-  } @else {
-    <div class="alert alert-danger text-center">Product Not Found.</div>
+  } 
+  
+  @else {
+    <div class="alert alert-danger border-0 shadow-sm text-center rounded-3 py-3" role="alert">
+      ⚠ Product Not Found.
+    </div>
   }
+</div>
+
+<!-- ডিলিট কনফার্মেশন মোডাল -->
+<div
+  class="modal fade"
+  id="deleteConfirmModal"
+  tabindex="-1"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      
+      <div class="modal-header border-0 bg-light rounded-top-4 py-3">
+        <h5 class="modal-title fw-bold text-danger" id="deleteModalLabel">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body p-4 text-center">
+        <div class="text-danger fs-2 mb-2">⚠</div>
+        <h5 class="fw-bold mb-2">Are you sure?</h5>
+        <p class="text-secondary small mb-0">
+          Do you really want to delete this product? This action cannot be undone.
+        </p>
+      </div>
+
+      <div class="modal-footer border-0 justify-content-center gap-2 pb-4">
+        <button
+          type="button"
+          class="btn btn-light border rounded-pill px-4"
+          data-bs-dismiss="modal"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-danger rounded-pill px-4"
+          [disabled]="isDeleting"
+          (click)="confirmDelete()"
+          data-bs-dismiss="modal"
+        >
+          @if (isDeleting) {
+            <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+            Deleting...
+          } @else {
+            Yes, Delete
+          }
+        </button>
+      </div>
+
+    </div>
+  </div>
 </div>

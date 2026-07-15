@@ -1,1 +1,84 @@
-<p>login works!</p>
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light-subtle">
+  <div class="row w-100 justify-content-center m-0">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+      
+      <div class="card border-0 shadow-sm rounded-3 p-4 bg-white" style="box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1) !important;">
+        
+        <div class="text-center mb-4">
+          <h2 class="fw-bold text-secondary mb-2" style="font-family: SFProDisplay-Bold, Helvetica, Arial, sans-serif; letter-spacing: -0.5px;">Log in to App</h2>
+        </div>
+
+        @if (errorMessage) {
+          <div class="alert alert-danger border-0 rounded-3 small py-2 mb-3 text-center" role="alert" style="background-color: #ffebe9; color: #ce1b27;">
+            {{ errorMessage }}
+          </div>
+        }
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+          
+          <div class="mb-3 position-relative">
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              class="form-control form-control-lg fs-6 py-3 border-secondary-subtle rounded-3"
+              placeholder="Email address"
+              [ngClass]="{ 'is-invalid': loginForm.get('email')?.touched && loginForm.get('email')?.invalid }"
+              style="padding-left: 16px;"
+            />
+            @if (loginForm.get('email')?.touched && loginForm.get('email')?.invalid) {
+              <div class="invalid-feedback ps-1 small mt-1">
+                @if (loginForm.get('email')?.errors?.['required']) { Email is required. }
+                @if (loginForm.get('email')?.errors?.['email']) { Please enter a valid email. }
+              </div>
+            }
+          </div>
+
+          <div class="mb-3 position-relative">
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
+              class="form-control form-control-lg fs-6 py-3 border-secondary-subtle rounded-3"
+              placeholder="Password"
+              [ngClass]="{ 'is-invalid': loginForm.get('password')?.touched && loginForm.get('password')?.invalid }"
+              style="padding-left: 16px;"
+            />
+            @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
+              <div class="invalid-feedback ps-1 small mt-1">
+                @if (loginForm.get('password')?.errors?.['required']) { Password is required. }
+                @if (loginForm.get('password')?.errors?.['minlength']) { Password must be at least 6 characters. }
+              </div>
+            }
+          </div>
+
+          <button
+            type="submit"
+            [disabled]="loginForm.invalid || isLoading"
+            class="btn btn-outline-secondary btn-lg w-100 rounded-3 fs-5 fw-bold py-2.5 mb-3"
+            style="font-family: Helvetica, Arial, sans-serif;"
+          >
+            @if (isLoading) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Logging In...
+            } @else {
+              Log In
+            }
+          </button>
+          
+          <hr class="text-muted my-4">
+
+          <div class="text-center">
+            <a 
+              routerLink="/auth/register" 
+              class="btn btn-outline-secondary btn-lg fs-6 fw-bold px-4 py-2.5 rounded-3 d-inline-block"
+            >
+              Create new account
+            </a>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

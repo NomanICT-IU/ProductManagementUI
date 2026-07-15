@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; // ChangeDetectorRef 
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router'; 
 
 import { ProductService } from '../../../services/product-service';
 import { ProductDetailsModel } from '../../../models/product-details-model';
@@ -15,9 +15,14 @@ import { ProductDetailsModel } from '../../../models/product-details-model';
 export class ProductDetails implements OnInit {
   product!: ProductDetailsModel;
   isLoading = false;
+  
+ 
+  selectedProductId!: number;
+  isDeleting = false;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router, 
     private productService: ProductService,
     private cdr: ChangeDetectorRef 
   ) {}
@@ -39,13 +44,38 @@ export class ProductDetails implements OnInit {
         this.product = response;
         this.isLoading = false;
         
-        // অ্যাঙ্গুলারকে জোরপূর্বক বলা যে ডাটা চেঞ্জ হয়েছে, ভিউ আপডেট করো
         this.cdr.detectChanges(); 
       },
       error: (err) => {
         console.error(err);
         this.isLoading = false;
         this.cdr.detectChanges();
+      }
+    });
+  }
+
+
+  openDeleteModal(id: number): void {
+    this.selectedProductId = id;
+  }
+
+  confirmDelete(): void {
+    if (!this.selectedProductId) return;
+
+    this.isDeleting = true;
+    this.cdr.detectChanges();
+
+    this.productService.deleteProduct(this.selectedProductId).subscribe({
+      next: () => {
+        this.isDeleting = false;
+        this.cdr.detectChanges();
+        this.router.navigate(['/user/products']);
+      },
+      error: (err) => {
+        console.error('Delete Error:', err);
+        this.isDeleting = false;
+        this.cdr.detectChanges();
+        alert('Failed to delete the product. Please try again.');
       }
     });
   }

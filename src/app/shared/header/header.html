@@ -33,15 +33,21 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/user/products/add']" routerLinkActive="active"> Add Product </a>
+            <a class="nav-link" [routerLink]="['/user/products/add']" routerLinkActive="active">
+              Add Product
+            </a>
           </li>
         </ul>
 
         <!-- Right Menu -->
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/auth/login" routerLinkActive="active"> Register </a>
-          </li>
+        <ul class="navbar-nav ms-auto align-items-center">
+          @if (userEmail) {
+            <li class="nav-item me-3">
+              <span class="nav-link text-secondary fw-semibold">
+                {{ userEmail }}
+              </span>
+            </li>
+          }
 
           <li class="nav-item">
             <a class="nav-link" routerLink="/auth/login" routerLinkActive="active"> Logout </a>
