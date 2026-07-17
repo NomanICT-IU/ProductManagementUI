@@ -41,6 +41,65 @@
 
         <!-- Right Menu -->
         <ul class="navbar-nav ms-auto align-items-center">
+          <!-- 🔔 SignalR Notification Bell Dropdown -->
+          @if (userEmail) {
+            <li class="nav-item me-3 position-relative" style="cursor: pointer">
+              <div (click)="toggleDropdown()" class="position-relative p-2">
+                <span style="font-size: 1.3rem">🔔</span>
+
+                <!-- Notification Badge Count -->
+                @if (notificationCount > 0) {
+                  <span
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                    style="font-size: 0.65rem"
+                  >
+                    {{ notificationCount }}
+                  </span>
+                }
+              </div>
+
+              <!-- Dropdown List Overlay -->
+              @if (showDropdown) {
+                <div
+                  class="position-absolute end-0 mt-2 bg-white border rounded shadow"
+                  style="width: 280px; max-height: 320px; overflow-y: auto; z-index: 1050"
+                >
+                  <div class="p-2 fw-bold border-bottom bg-light text-dark small">
+                    Notifications
+                  </div>
+
+                  <!-- No notification template -->
+                  @if (notifications.length === 0) {
+                    <div class="p-3 text-center text-muted small">No new notifications</div>
+                  }
+
+                  <!-- List of Notifications -->
+                  <ul class="list-unstyled mb-0">
+                    <li
+                      *ngFor="let notif of notifications"
+                      (click)="navigateToDetails(notif.productId)"
+                      class="p-2 border-bottom small text-dark"
+                      [style.cursor]="notif.productId ? 'pointer' : 'default'"
+                      style="word-wrap: break-word; transition: background 0.2s"
+                      onmouseover="this.style.background = '#f8f9fa'"
+                      onmouseout="this.style.background = 'white'"
+                    >
+                      <strong class="text-primary">{{ notif.user }}</strong
+                      >: {{ notif.message }}
+
+                      <!-- ➡️ Click to view indicator -->
+                      @if (notif.productId) {
+                        <div class="text-muted text-end" style="font-size: 0.7rem">
+                          Click to view ➡️
+                        </div>
+                      }
+                    </li>
+                  </ul>
+                </div>
+              }
+            </li>
+          }
+
           @if (userEmail) {
             <li class="nav-item me-3">
               <span class="nav-link text-secondary fw-semibold">
@@ -50,7 +109,7 @@
           }
 
           <li class="nav-item">
-            <a class="nav-link" routerLink="/auth/login" routerLinkActive="active"> Logout </a>
+            <a class="nav-link" (click)="onLogout()" style="cursor: pointer"> Logout </a>
           </li>
         </ul>
       </div>

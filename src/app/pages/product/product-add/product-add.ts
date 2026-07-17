@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
 import { ProductService } from '../../../services/product-service';
+import { SignalrService } from '../../../services/signalr-service';
 import { AddProductModel } from '../../../models/add-product-model';
 
 @Component({
@@ -23,6 +24,7 @@ export class ProductAdd {
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
+    private signalrService: SignalrService,
     private router: Router,
     private cdr: ChangeDetectorRef,
   ) {
@@ -62,11 +64,18 @@ export class ProductAdd {
     const newProduct: AddProductModel = this.productForm.value;
 
     this.productService.addProduct(newProduct).subscribe({
-      next: (response) => {
+      next: (response: any) => {
         this.showAlert('Product added successfully!', 'success');
         this.isSubmitting = false;
         this.cdr.detectChanges();
 
+        const generatedId = response.id || response.Id;
+
+        this.signalrService.broadcastNotification(
+          'System',
+          `A new product "${newProduct.name}" has been added!`,
+          generatedId,
+        );
         setTimeout(() => {
           this.router.navigate(['/user/products']);
         }, 3000);
